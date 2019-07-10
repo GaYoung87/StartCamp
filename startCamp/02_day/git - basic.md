@@ -115,4 +115,6 @@ $ git status
 
 % 만약 이상한 곳에 잡혀있다면 q를 통해 나갈 수 있음
 
-% cd .. -> 이전 파일로 돌아감
+% cd .. -> 이전 파일로 돌아감랴
+
+Finish handling csv files

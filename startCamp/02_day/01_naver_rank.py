@@ -5,7 +5,7 @@ import requests
 import bs4
 url = 'https://www.naver.com/'
 
-selector = '.ah_k'
+selector = '.ah_k' #class selector이다 (이렇게 생긴 것을 추출하겠다)
 # seletor로 가지고와서 하면 ok
 html = requests.get(url).text
 soup = bs4.BeautifulSoup(html, 'html.parser') #parsing 위의 것에 접근할 수 있도록!

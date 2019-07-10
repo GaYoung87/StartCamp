@@ -1,0 +1,19 @@
+/* 요소 선택자(type) */
+h2 {
+    color:darkolivegreen;
+}
+
+/* 아이디 선택자(id) */
+#description {
+    background-color:lightblue; 
+}
+
+/* 클래스 선택자(class)(li.list-item가능, .list-item가능) */
+li.list-item {
+    font-size: 20px;
+}
+
+/* ul 안에 있는 li 선택 */
+ul li {
+    background-color: cornflowerblue;
+}
