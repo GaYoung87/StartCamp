@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Lotto</title>
+</head>
+<body>
+    <h1>로또</h1>
+    <form action="/lotto_result">
+        로또 회차: <input type="number" name="round" /><br /> <!--별도의 닫히는 테그는 없음. br / 셀프테그 가능. br은 다음 줄로 보내는 애 -->
+        로또 번호: <input type="text" name="numbers" /><br /> <!--6개를 받아야하는데 input을 여섯개쓰지말고, text로 받아서 우리가 띄어쓰기split하면 list로 받을 수 있음-->
+        <button type="submit">제출하기</button>
+    </form>
+</body>
+</html>

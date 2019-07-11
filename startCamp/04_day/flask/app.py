@@ -51,5 +51,41 @@ def ascii_result():
     return render_template('ascii_result.html', result=result)
 
 
+# 로또!
+# 회차, 번호 받아서 비교(실제 당첨번호와 비교해서 몇위인지 알려줌) 대부분의 route는 2개면 된다.
+#1.사용자가 input(정보)을 입력할수있는 페이지 2.사용자가 그 페이지를 통해 우리에게 제출했을때 우리가 받아 계산하고 비교해서 사용자에게 다시 보내줄 수 있는 페이지
+
+@app.route('/lotto_input') # 사용자가 입력할 수 있는 페이지만 전달
+def lotto_input():
+    return render_template('lotto_input.html')
+
+
+@app.route('/lotto_result')
+def lotto_result(): # 이름이 겹친다면 바꾸는게 낫다.
+    lotto_round = request.args.get('round')
+    lotto_numbers = request.args.get('numbers').split() # 리스트로 분해해야 확인하기 쉬워진다 -> list로 만들어야함 -> .split()
+
+    url = f'https://dhlottery.co.kr/common.do?method=getLottoNumber&drwNo={lotto_round}'
+    response = requests.get(url)
+    lotto_info = response.json() # 아까는 text라고 함. .json은 함수이기때문에 .json()으로 작성
+    print(lotto_info)
+    return f'{lotto_round}, {lotto_numbers}'
+    # Json타입의 파일을 python dictionary로 parsing해줘
+    # 지금 사용자가 입력한 번호랑, 회차별 번호 다 가지고있음
+
+    # 이제부터는 비교!
+    list = []
+    if lotto_numbers == lotto_info['drwtNo1']: # 인포에 있는 것을 if a in list -> 있으면 if
+        list.append(lotto_info['drwtNo1'])
+        list.append(lotto_info['drwtNo1'])
+        list.append(lotto_info['drwtNo1'])
+        list.append(lotto_info['drwtNo1'])
+        list.append(lotto_info['drwtNo1'])
+        print(f'번호는 {drwtNo1}')
+
+
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
