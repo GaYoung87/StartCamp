@@ -62,30 +62,72 @@ def lotto_input():
 
 @app.route('/lotto_result')
 def lotto_result(): # 이름이 겹친다면 바꾸는게 낫다.
+#사용자 입력값 받기
     lotto_round = request.args.get('round')
-    lotto_numbers = request.args.get('numbers').split() # 리스트로 분해해야 확인하기 쉬워진다 -> list로 만들어야함 -> .split()
+    lotto_numbers = request.args.get('numbers').split() # 리스트로 분해해야 확인하기 쉬워진다 -> list로 만들어야함 -> .split() #['1', '2', ,,,]->string형태
 
+# 로또 실제 당첨번호 확인
     url = f'https://dhlottery.co.kr/common.do?method=getLottoNumber&drwNo={lotto_round}'
     response = requests.get(url)
     lotto_info = response.json() # 아까는 text라고 함. .json은 함수이기때문에 .json()으로 작성
-    print(lotto_info)
-    return f'{lotto_round}, {lotto_numbers}'
+
     # Json타입의 파일을 python dictionary로 parsing해줘
     # 지금 사용자가 입력한 번호랑, 회차별 번호 다 가지고있음
 
     # 이제부터는 비교!
-    list = []
-    if lotto_numbers == lotto_info['drwtNo1']: # 인포에 있는 것을 if a in list -> 있으면 if
-        list.append(lotto_info['drwtNo1'])
-        list.append(lotto_info['drwtNo1'])
-        list.append(lotto_info['drwtNo1'])
-        list.append(lotto_info['drwtNo1'])
-        list.append(lotto_info['drwtNo1'])
-        print(f'번호는 {drwtNo1}')
+    # 내가한 것
+    # winner = []
+    # if str(lotto_info['drwtNo1']) in lotto_numbers:
+    #     winner.append(lotto_info['drwtNo1'])
+    # if str(lotto_info['drwtNo2']) in lotto_numbers:
+    #     winner.append(lotto_info['drwtNo2'])
+    # if str(lotto_info['drwtNo3']) in lotto_numbers:
+    #     winner.append(lotto_info['drwtNo3'])
+    # if str(lotto_info['drwtNo4']) in lotto_numbers:
+    #     winner.append(lotto_info['drwtNo4'])
+    # if str(lotto_info['drwtNo5']) in lotto_numbers:
+    #     winner.append(lotto_info['drwtNo5'])
+    # if str(lotto_info['drwtNo6']) in lotto_numbers:
+    #     winner.append(lotto_info['drwtNo6'])
+    # if str(lotto_info['bnusNo']) in lotto_numbers:
+    #     winner.append(lotto_info['bnusNo'])
+    # print(winner)
 
+    # 선생님이 알려주신 방법
+    winner = [] # [1, 2, ..] -> 숫자형태
+    for i in range(1, 7): #1 ~ 6
+        winner.append(str(lotto_info[f'drwtNo{i}']))
 
+    print(lotto_numbers) # 사용자 도전번호
+    print(winner)# 실제 당첨번호
+    
+# 번호 교집합 개수 찾기 
+############## 사용자가 주는 input은 믿지 말아라 ##############  -> input확인작업 필요
+    if len(lotto_numbers) == 6:             # 사용자 숫자가 딱 6개가 맞는지 확인
+        matched = 0
+        for number in lotto_numbers:        # 사용자 숫자를 하나씩 확인하면서 
+            if number in winner:            # 당첨번호에 있는지 체크해서
+                matched += 1                # 당첨시 matched를 1씩 증가시킨다.
 
+        if matched == 6:
+            result = '1등입니다!'
+        elif matched == 5:
+            if str(lotto_info['bnusNo']) in lotto_numbers:
+                result = '2등입니다!'
+            else:
+                result = '3등입니다!'
+        elif matched == 4:
+            result = '4등입니다.'
+        elif matched == 3:
+            result = '5등입니다'
+        else:
+            result = '꽝입니다'
+    else:
+        result = '입력하신 숫자가 6개가 아닙니다.'
+
+    return render_template('lotto_result.html', result=result)
 
 
 if __name__ == '__main__':
     app.run(debug=True)
+    
